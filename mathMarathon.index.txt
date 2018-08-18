@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Coda' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+    <title>Math Marathon</title>
+    <link rel="stylesheet" type="text/css" href="mathMarathon.css" />
+</head>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+<script type="text/babel">
+class App extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
+    equation:'0/0=0',
+    currentEquation:'',
+    trueResult:'',
+    score:0,
+    countDown:5,
+    gameStatus:'pause',
+    bestScore:0,
+    }
+    this.getNumber = this.getNumber.bind(this);
+    this.getOperand = this.getOperand.bind(this);
+    this.getEquation = this.getEquation.bind(this);
+    this.checkCurrentEquation = this.checkCurrentEquation.bind(this);
+    this.startGame = this.startGame.bind(this);
+    this.countDown = this.countDown.bind(this);
+    this.shareScore = this.shareScore.bind(this);
+    this.gameAcceleration = this.gameAcceleration.bind(this);
+  }
+  getNumber(){
+    return Math.floor(10*Math.random());
+  }
+  getOperand(){
+    const operandArr = ['+','-','*','/']
+    return operandArr[Math.floor(operandArr.length*Math.random())]
+  }
+  getEquation(){
+  let currentEquation =this.getNumber()+this.getOperand()+this.getNumber();
+    let fakeResult = Math.floor(15*Math.random());
+    let trueResult = Math.floor(eval(currentEquation));
+    let result = 0.5<Math.random()?trueResult:fakeResult
+    let formula = currentEquation+'='+result;
+    this.setState({equation:formula,currentEquation:currentEquation,result:result})
+  }
+  checkCurrentEquation(e){
+   let verdict =eval(this.state.currentEquation)===this.state.result;
+   let input = e.target.value == 'true';
+   console.clear();
+    if(input == verdict){
+     console.log('you are Right!');
+      this.setState({score:this.state.score+1});
+      this.gameAcceleration();
+      document.getElementById("equation").style.background ="hsl(100, 100%, 50%)"; 
+      this.getEquation();
+   }else{
+     console.log('you are wrong');
+     this.setState({score:this.state.score-1});
+         this.gameAcceleration();
+     document.getElementById("equation").style.background ="hsl(100, 100%, 50%)"; 
+     this.getEquation();
+   } 
+  }
+  startGame(){
+    if(this.state.gameStatus == "pause"){
+      this.setState({gameStatus:"running",score:0});
+    document.getElementById("true").style.pointerEvents = "auto";
+    document.getElementById("false").style.pointerEvents = "auto";
+    setTimeout(()=>{this.countDown();},1);
+    }else{
+    this.setState({gameStatus:"pause",equation:"0/0=0"});
+    document.getElementById("true").style.pointerEvents = "none";
+    document.getElementById("false").style.pointerEvents = "none";
+      if(this.state.score>this.state.bestScore){
+      this.setState({bestScore:this.state.score});
+      }
+    }
+  }
+ countDown(){
+  let interval = setInterval(()=>{
+if(this.state.gameStatus == "running"){
+  if(this.state.countDown === 0){
+    this.setState({score:this.state.score-1});
+    this.getEquation();
+    this.gameAcceleration();
+  }else{ this.setState({countDown:this.state.countDown-1});}
+  document.getElementById("equation").style.background ="hsl("+this.state.countDown*20+", 100%, 50%)";
+}else{
+clearInterval(interval);
+this.setState({countDown:5})
+    document.getElementById("equation").style.background ="hsl(100, 100%, 50%)"; 
+  }
+    },1000);
+}
+gameAcceleration(){
+  if(this.state.score<5){
+    this.setState({countDown:5})
+  }else if(this.state.score>=5&&this.state.score<=10){
+   this.setState({countDown:4}) 
+  }else if(this.state.score>10&&this.state.score<=20){
+   this.setState({countDown:3}) 
+  }else if(this.state.score>20&&this.state.score<=30){
+   this.setState({countDown:2}) 
+  }else if(this.state.score>30){
+   this.setState({countDown:1}) 
+  }
+}
+
+ shareScore(){
+     window.open("http:www.facebook.com/sharer/sharer.php?u=https://codepen.io/Meikochow/full/YjBJmg/?editors=1010&quote="+"I've acheived "+this.state.bestScore + " points playing Math Marathon. What's your score?");
+ }
+  render(){
+ let stat = this.state.gameStatus=="pause"?"Start":"Pause";
+    return(
+    <div>
+     <header><h1>Math Marathon</h1></header>
+<h1 id="equation">{this.state.equation}</h1>
+       <button id="true" value="true" onClick={this.checkCurrentEquation} >True</button>
+       <button id="false" value="false" onClick={this.checkCurrentEquation}>False</button>
+        <h1 id="score">Score:{this.state.score}</h1>
+<li id="start" onClick={this.startGame}><button onClick={this.getEquation}>{stat}</button></li>
+        <h2 className="bestScore">Best Score: {this.state.bestScore}</h2>
+        <i onClick={this.shareScore}>Share your BEST score on <i className="fa fa-facebook-square fa-2x"></i></i>
+        <footer>Coded by Victor Cojocaru 2018</footer>
+        </div>
+    )
+  }
+}
+ReactDOM.render(<App/>,document.getElementById("app"));
+</script>
+</html>

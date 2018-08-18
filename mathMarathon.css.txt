@@ -1,0 +1,82 @@
+#app{
+  border:2px solid black;
+  text-align:center;
+font-family:"Coda";
+  background-image:url("https://s20.postimg.cc/yj5ogxrd7/50883152-complex-math-formulas-on-whiteboard-mathematics-and-sci.jpg");
+  background-size:200px;
+}
+header{
+  color:black;
+  background:rgb(255, 255, 255, 0.6);
+  margin:auto;
+}
+#equation{
+  height:80px;
+  line-height:80px;
+  font-family:"Orbitron";
+  font-size:50px;
+  width:406px;
+  background-color:hsl(100,100%,50%);
+  margin:auto;
+}
+#true,#false{
+  width:200px;
+  height:60px;
+  border:none;
+  margin:3px;
+  font-size:40px;
+  pointer-events:none;
+}
+#true{
+  background:green;
+}
+#false{
+  background:red;
+}
+#start{
+  list-style:none;
+  margin:auto;
+  width:200px;
+  height:100px;
+}
+#start button{
+  height:100%;
+  width:100%;
+  border:none;
+  font-size:60px;
+  background:none;
+  outline:1px solid black;
+  background:#A0A0A0;
+}
+#start button:hover{
+  background:#888888;
+  outline:3px double black;
+  
+}
+#countDown{
+  background:red;
+  margin:auto;
+  width:100px;
+  min-width:100px;
+}
+.bestScore,#score{
+  color:black;
+  background:rgb(255, 255, 255, 0.6);
+  width:230px;
+  margin:auto;
+}
+.fa-facebook-square{
+  color:#3B5998;
+  background:white;
+}
+footer{
+  background:rgb(255, 255, 255, 0.6);
+  margin:auto;
+  width:230px;
+}
+@media screen and (max-width:700px){
+  #equation{
+   width:230px;
+    font-size:36px;
+  }
+}
