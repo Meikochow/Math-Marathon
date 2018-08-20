@@ -15,6 +15,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
 <script type="text/babel">
+
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -54,6 +55,7 @@ class App extends React.Component{
   checkCurrentEquation(e){
    let verdict =eval(this.state.currentEquation)===this.state.result;
    let input = e.target.value == 'true';
+
    console.clear();
     if(input == verdict){
      console.log('you are Right!');
@@ -82,6 +84,7 @@ class App extends React.Component{
       }
     }
   }
+
  countDown(){
   let interval = setInterval(()=>{
 if(this.state.gameStatus == "running"){
@@ -113,6 +116,7 @@ gameAcceleration(){
     document.getElementById("equation").style.background ="hsl(40, 100%, 50%)"
   }
 }
+
  shareScore(){
      window.open("http:www.facebook.com/sharer/sharer.php?u=https://codepen.io/Meikochow/full/YjBJmg/?editors=1010&quote="+"I've acheived "+this.state.bestScore + " points playing Math Marathon. What's your score?");
  }
